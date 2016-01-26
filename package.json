@@ -1,0 +1,26 @@
+{
+  "name": "matreshka_router",
+  "version": "0.0.1",
+  "description": "Router-like plugin for Matreshka.js",
+  "main": "matreshka-router.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finom/matreshka_router.git"
+  },
+  "keywords": [
+    "matreshka",
+    "router"
+  ],
+  "author": "Andrey Gubanov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/finom/matreshka_router/issues"
+  },
+  "homepage": "https://github.com/finom/matreshka_router#readme",
+  "dependencies": {
+    "matreshka": "^1.5.2-2"
+  }
+}
