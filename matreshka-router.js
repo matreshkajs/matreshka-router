@@ -6,7 +6,7 @@
 	} else {
 		factory(root.Matreshka);
 	}
-}(this, function(MK) {
+}(this, function(MK) {console.log(MK);
 	"use strict";
 	var router = MK.router = {
 		parts: [],
@@ -77,25 +77,35 @@
 
 		subscribe: function(obj, route) {
 			var mkData = MK.initMK(obj)[MK.sym],
-				keys = route.replace(/\/\//g, '/').replace(/^\/|\/$/g, '').split('/').filter(function(key) {
+				keys = route.replace(/\/\//g, '/').replace(/^\/|\/$/g, '').split('/'),
+				filteredKeys = keys.filter(function(key) {
 					return key != '*';
 				}),
 				parts = [];
 
 			this.init();
 
-			MK.on(obj, keys.map(function(key) {
+			MK.on(obj, filteredKeys.map(function(key) {
 				return 'change:' + key
 			}).join(' '), function(evt) {
 				if(evt && evt.routeSilent) return;
 
 				var values = [];
 				for(var i = 0; i < keys.length; i++) {
-					if(obj[keys[i]]) {
-						values.push(obj[keys[i]]);
+					if(keys[i] != '*') {
+						if(obj[keys[i]]) {
+							values.push(obj[keys[i]]);
+						} else {
+							break;
+						}
 					} else {
-						break;
+						if(this.parts[i]) {
+							values.push(this.parts[i]);
+						} else {
+							break;
+						}
 					}
+
 				}
 
 				this.parts = values;
@@ -104,34 +114,91 @@
 
 			MK.on(this, 'urlchange', function() {
 				for(var i = 0; i < keys.length; i++) {
-					MK.set(obj, keys[i], this.parts[i] || null, {
-						routeSilent: true
-					})
+					if(keys[i] != '*') {
+						MK.set(obj, keys[i], this.parts[i] || null, {
+							routeSilent: true
+						})
+					}
 				}
 			});
 
 			for(var i = 0; i < keys.length; i++) {
-				parts.push(obj[keys[i]] || this.parts[i]);
+				parts.push(obj[keys[i]] == '*' ? this.parts[i] : obj[keys[i]] || this.parts[i]);
 			}
 
 			this.parts = parts;
 		}
 	};
 
-	router.url = '/azaza/ozozo/';
+	MK.prototype.initRouter = function(route) {
+		router.subscribe(this, route);
+		return this;
+	};
+
+	MK.prototype.onEquals = function(key, value, handler, thisArg, setOnInit) {
+		var keyValue;
+		if(typeof key == 'object') {
+			onEqualsObject.call(this, key, value, handler, thisArg);
+		} else if(typeof key == 'string') {
+			keyValue = {};
+			keyValue[key] = value;
+			onEqualsObject.call(this, keyValue, handler, thisArg, setOnInit);
+		}
+
+		return this;
+	};
+
+	function onEqualsObject(keyValue, handler, thisArg, setOnInit) {
+		var keys = Object.keys(keyValue);
+
+		if(typeof thisArg != 'object') {
+			setOnInit = thisArg;
+			thisArg = this;
+		}
+
+		this.on(keys.map(function(key) {
+			return 'change:' + key
+		}).join(' '), function(evt) {
+			var equals = true;
+
+			for(var i = 0; i < keys.length; i++) {
+				if(keyValue[keys[i]] != this[keys[i]]) {
+					equals = false;
+					break;
+				}
+			}
+
+			if(equals) {
+				handler.call(thisArg);
+			}
+		});
+
+		if(setOnInit) {
+			handler.call(thisArg);
+		}
+	}
+
+	/*router.url = '/azaza/ozozo/cccccccc';
 	router.subscribe(window.blah = {
 		a: 'xxx'
-	}, 'a/b/c/d');
+	}, 'a/ * /c/d');
 
 
-	blah.a = 'soso'
+	//blah.a = 'soso'
 
 	MK.bindNode(blah, 'a', 'input.a');
 	MK.bindNode(blah, 'b', 'input.b');
 	MK.bindNode(blah, 'c', 'input.c');
 	MK.bindNode(blah, 'd', 'input.d');
 
+	window.yoba = new MK;
 
+	yoba.onEquals({
+		x: 1,
+		y: 2
+	}, function() {
+		console.log('4!');
+	})
 
 	/*var router = MK.router = {
 		parts: [],
