@@ -4,7 +4,7 @@ let gutil = require('gulp-util');
 let Server = require('karma').Server;
 
 
-gulp.task('minify', cb => {
+gulp.task('minify', () => {
 	let uglify = require('gulp-uglify'),
 		sourcemaps = require('gulp-sourcemaps'),
 		rename = require('gulp-rename');
@@ -18,7 +18,7 @@ gulp.task('minify', cb => {
     	.pipe(gulp.dest('./'));
 });
 
-gulp.task('test', function (done) {
+gulp.task('test', done => {
 	new Server({
 		configFile: __dirname + '/karma.conf.js',
 		singleRun: true
