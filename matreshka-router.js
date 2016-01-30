@@ -91,16 +91,17 @@
 						}, true);
 					} else if(this.type == 'history') {
 						window.addEventListener('popstate', function(evt) {
-							if(!evt.state || !evt.state.azaza) return;
-							MK.set(this, 'url', location.pathname, {
-								popEvent: true
-							});
+							if(evt.state && evt.state.validPush) {
+								MK.set(this, 'url', location.pathname, {
+									popEvent: true
+								});
+							}
 						}.bind(this));
 
 						MK.onDebounce(this, 'change:url', function(evt) {
 							if(!evt || !evt.popEvent) {
 								history.pushState({
-									azaza: true
+									validPush: true
 								}, '', this.url + location.hash);
 							}
 						}, true);
