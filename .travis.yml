@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "4.2.6"
+script:
+  - gulp
+before_script:
+  - npm install --global gulp
+after_success:
+  - npm run coveralls
