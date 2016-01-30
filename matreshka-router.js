@@ -1,4 +1,5 @@
 (function(root, factory) {
+	/* istanbul ignore next */
 	if (typeof define === 'function' && define.amd) {
 		define(['matreshka'], factory);
 	} else if (typeof module === 'object' && module.exports) {
