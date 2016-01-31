@@ -35,7 +35,7 @@
 		url: '/',
 		hashBang: '!#/',
 		init: function() {
-			if (this.initialized) return;
+			if (this.initialized) return this;
 
 			var _this = this,
 				type = _this.type,
@@ -129,7 +129,7 @@
 
 		},
 		subscribe: function(obj, route) {
-			var _this = this,
+			var _this = this.init(),
 				keys = route.replace(/\/\//g, '/').replace(/^\/|\/$/g, '').split('/'),
 				changeEvents = [],
 				filteredKeys = keys.filter(function(key) {
@@ -137,8 +137,6 @@
 				}),
 				parts = [],
 				i;
-
-			_this.init();
 
 			for(i = 0; i < keys.length; i++) {
 				if(keys[i] != '*') {
