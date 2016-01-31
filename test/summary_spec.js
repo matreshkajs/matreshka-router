@@ -72,7 +72,59 @@ describe('Summary', () => {
 		}, 50);
 	});
 
-	it('allows to walk thru history', () => {
-		
+	it('allows to walk thru the history via hash router', () => {
+		var mk = new MK();
+
+		mk.set({
+			a: 'wfoo',
+			b: 'wbar',
+			c: 'wbaz'
+		});
+
+		mk.initRouter('/a/b/c/');
+
+		setTimeout(() => {
+			expect(document.location.hash).toEqual('#!/wfoo/wbar/wbaz/');
+			mk.a = 'wzoo';
+
+			setTimeout(() => {
+				expect(document.location.hash).toEqual('#!/wzoo/wbar/wbaz/');
+				expect(mk.a).toEqual('wzoo');
+				history.back();
+
+				expect(document.location.hash).toEqual('#!/wfoo/wbar/wbaz/');
+
+				expect(mk.a).toEqual('wfoo');
+				done();
+			}, 50);
+		}, 50);
+	});
+
+	it('allows to walk thru the history via history router', () => {
+		var mk = new MK();
+
+		mk.set({
+			a: 'wqux',
+			b: 'wpoo',
+			c: 'wzum'
+		});
+
+		mk.initRouter('/a/b/c/', 'history');
+
+		setTimeout(() => {
+			expect(document.location.pathname).toEqual('/wfoo/wbar/wbaz/');
+			mk.a = 'wzoo';
+
+			setTimeout(() => {
+				expect(document.location.pathname).toEqual('/wzoo/wbar/wbaz/');
+				expect(mk.a).toEqual('wzoo');
+				history.back();
+
+				expect(document.location.pathname).toEqual('/wfoo/wbar/wbaz/');
+
+				expect(mk.a).toEqual('wfoo');
+				done();
+			}, 50);
+		}, 50);
 	});
 });
