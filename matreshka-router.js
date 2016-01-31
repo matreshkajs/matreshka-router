@@ -154,7 +154,7 @@
 					value;
 
 				for (i = 0; i < keys.length; i++) {
-					value = keys[i] != '*' ? obj[keys[i]] : _this.parts[i];
+					value = keys[i] == '*' ? _this.parts[i] : obj[keys[i]];
 
 					if (value) {
 						values.push(value);
