@@ -18,6 +18,7 @@
 	var linkProps = MK.linkProps,
 		onDebounce = MK.onDebounce,
 		on = MK.on,
+		set = MK.set,
 		win = typeof window != 'undefined' ? window : null;
 
 	function Router(type) {
@@ -93,7 +94,7 @@
 			if (win) {
 				if (type == 'hash') {
 					win.addEventListener('hashchange', function() {
-						MK.set(_this, 'hashBang', location.hash, {
+						set(_this, 'hashBang', location.hash, {
 							hashEvent: true
 						});
 					});
@@ -106,7 +107,7 @@
 				} else if (type == 'history') {
 					win.addEventListener('popstate', function(evt) {
 						if (evt.state && evt.state.validPush) {
-							MK.set(_this, 'url', location.pathname, {
+							set(_this, 'url', location.pathname, {
 								popEvent: true
 							});
 						}
@@ -130,6 +131,7 @@
 		subscribe: function(obj, route) {
 			var _this = this,
 				keys = route.replace(/\/\//g, '/').replace(/^\/|\/$/g, '').split('/'),
+				changeEvents = [],
 				filteredKeys = keys.filter(function(key) {
 					return key != '*';
 				}),
@@ -138,9 +140,13 @@
 
 			_this.init();
 
-			on(obj, filteredKeys.map(function(key) {
-				return 'change:' + key
-			}).join(' '), function(evt) {
+			for(i = 0; i < keys.length; i++) {
+				if(keys[i] != '*') {
+					changeEvents.push('change:' + keys[i]);
+				}
+			}
+
+			on(obj, changeEvents, function(evt) {
 				if (evt && evt.routeSilent) return;
 
 				var values = [],
@@ -170,7 +176,7 @@
 				var i;
 				for (i = 0; i < keys.length; i++) {
 					if (keys[i] != '*') {
-						MK.set(obj, keys[i], _this.parts[i] || null, {
+						set(obj, keys[i], _this.parts[i] || null, {
 							routeSilent: true
 						})
 					}
