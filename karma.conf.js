@@ -22,7 +22,8 @@ module.exports = function(config) {
 		files: [
 			'node_modules/matreshka/matreshka.js',
 			'matreshka-router.js',
-			'test/*.js'
+			'test/helpers.js',
+			'test/*_spec.js'
 		],
 
 
