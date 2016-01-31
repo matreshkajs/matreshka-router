@@ -10,6 +10,7 @@
 }(this, function(MK) {
 	"use strict";
 
+	/* istanbul ignore if */
 	if(!MK) {
 		throw Error('Matreshka is missing');
 	}
