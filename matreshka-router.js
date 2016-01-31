@@ -150,23 +150,17 @@
 				if (evt && evt.routeSilent) return;
 
 				var values = [],
-					i;
+					i,
+					value;
 
 				for (i = 0; i < keys.length; i++) {
-					if (keys[i] != '*') {
-						if (obj[keys[i]]) {
-							values.push(obj[keys[i]]);
-						} else {
-							break;
-						}
-					} else {
-						if (_this.parts[i]) {
-							values.push(_this.parts[i]);
-						} else {
-							break;
-						}
-					}
+					value = keys[i] != '*' ? obj[keys[i]] : _this.parts[i];
 
+					if (value) {
+						values.push(value);
+					} else {
+						break;
+					}
 				}
 
 				_this.parts = values;
