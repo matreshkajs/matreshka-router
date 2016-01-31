@@ -11,13 +11,18 @@
 	"use strict";
 
 	/* istanbul ignore if */
-	if(!MK) {
+	if (!MK) {
 		throw Error('Matreshka is missing');
 	}
 
+	var linkProps = MK.linkProps,
+		onDebounce = MK.onDebounce,
+		on = MK.on,
+		win = typeof window != 'undefined' ? window : null;
+
 	function Router(type) {
 		// singletone pattern for history and hash router
-		if(type in Router) {
+		if (type in Router) {
 			return Router[type];
 		}
 
@@ -29,114 +34,128 @@
 		url: '/',
 		hashBang: '!#/',
 		init: function() {
-			if(!this.initialized) {
-				MK.linkProps(this, 'parts', 'url', function(v) {
-					var fixed = v.replace(/\/\//g, '/')
-						.replace(/^\/|\/$/g, '');
+			if (this.initialized) return;
 
-					return fixed ? fixed.split('/') : [];
-				});
+			var _this = this,
+				type = _this.type,
+				location = document.location;
 
-				MK.linkProps(this, 'url', 'parts', function(v) {
-					var parts = [];
-					for(var i = 0; i < v.length; i++) {
-						if(v[i]) {
-							parts.push(v[i]);
-						} else {
-							break;
-						}
-					}
 
-					return parts.length ? ('/' + parts.join('/') + '/') : '/';
-				});
+			linkProps(_this, 'parts', 'url', function(v) {
+				var fixed = v.replace(/\/\//g, '/')
+					.replace(/^\/|\/$/g, '');
 
-				MK.linkProps(this, 'hashBang', 'url', function(v) {
-					return v && v != '/' ? '#!' + v : '';
-				});
+				return fixed ? fixed.split('/') : [];
+			});
 
-				MK.linkProps(this, 'url', 'hashBang', function(v) {
-					return v ? v.replace(/^#!/, '') : '';
-				});
-
-				MK.on(this, 'change:parts', function(evt) {
-					var value = evt.value,
-						prevValue = evt.previousValue,
-						equals = value.length == prevValue.length;
-
-					if(equals) {
-						for(var i = 0; i < value.length; i++) {
-							if(value[i] != prevValue[i]) {
-								equals = false;
-								break;
-							}
-						}
-					}
-
-					if(!equals) {
-						MK.trigger(this, 'urlchange');
-					}
-				});
-
-				if(typeof window != 'undefined') {
-					if(this.type == 'hash') {
-						window.addEventListener('hashchange', function() {
-							MK.set(this, 'hashBang', location.hash, {
-								hashEvent: true
-							});
-						}.bind(this));
-
-						MK.onDebounce(this, 'change:hashBang', function(evt) {
-							if(!evt || !evt.hashEvent) {
-								location.hash = this.hashBang;
-							}
-						}, true);
-					} else if(this.type == 'history') {
-						window.addEventListener('popstate', function(evt) {
-							if(evt.state && evt.state.validPush) {
-								MK.set(this, 'url', location.pathname, {
-									popEvent: true
-								});
-							}
-						}.bind(this));
-
-						MK.onDebounce(this, 'change:url', function(evt) {
-							if(!evt || !evt.popEvent) {
-								history.pushState({
-									validPush: true
-								}, '', this.url + location.hash);
-							}
-						}, true);
+			linkProps(_this, 'url', 'parts', function(v) {
+				var parts = [],
+					i;
+				for (i = 0; i < v.length; i++) {
+					if (v[i]) {
+						parts.push(v[i]);
+					} else {
+						break;
 					}
 				}
 
-				this.initialized = true;
+				return parts.length ? ('/' + parts.join('/') + '/') : '/';
+			});
+
+			linkProps(_this, 'hashBang', 'url', function(v) {
+				return v && v != '/' ? '#!' + v : '';
+			});
+
+			linkProps(_this, 'url', 'hashBang', function(v) {
+				return v ? v.replace(/^#!/, '') : '';
+			});
+
+			on(_this, 'change:parts', function(evt) {
+				var value = evt.value,
+					prevValue = evt.previousValue,
+					equals = value.length == prevValue.length,
+					i;
+
+				if (equals) {
+					for (i = 0; i < value.length; i++) {
+						if (value[i] != prevValue[i]) {
+							equals = false;
+							break;
+						}
+					}
+				}
+
+				if (!equals) {
+					MK.trigger(_this, 'urlchange');
+				}
+			});
+
+			if (win) {
+				if (type == 'hash') {
+					win.addEventListener('hashchange', function() {
+						MK.set(_this, 'hashBang', location.hash, {
+							hashEvent: true
+						});
+					});
+
+					onDebounce(_this, 'change:hashBang', function(evt) {
+						if (!evt || !evt.hashEvent) {
+							location.hash = _this.hashBang;
+						}
+					}, true);
+				} else if (type == 'history') {
+					win.addEventListener('popstate', function(evt) {
+						if (evt.state && evt.state.validPush) {
+							MK.set(_this, 'url', location.pathname, {
+								popEvent: true
+							});
+						}
+					});
+
+					onDebounce(_this, 'change:url', function(evt) {
+						if (!evt || !evt.popEvent) {
+							history.pushState({
+								validPush: true
+							}, '', _this.url + location.hash);
+						}
+					}, true);
+				}
 			}
+
+			_this.initialized = true;
+
+			return _this;
+
 		},
 		subscribe: function(obj, route) {
-			var keys = route.replace(/\/\//g, '/').replace(/^\/|\/$/g, '').split('/'),
+			var _this = this,
+				keys = route.replace(/\/\//g, '/').replace(/^\/|\/$/g, '').split('/'),
 				filteredKeys = keys.filter(function(key) {
 					return key != '*';
 				}),
-				parts = [];
+				parts = [],
+				i;
 
-			this.init();
+			_this.init();
 
-			MK.on(obj, filteredKeys.map(function(key) {
+			on(obj, filteredKeys.map(function(key) {
 				return 'change:' + key
 			}).join(' '), function(evt) {
-				if(evt && evt.routeSilent) return;
+				if (evt && evt.routeSilent) return;
 
-				var values = [];
-				for(var i = 0; i < keys.length; i++) {
-					if(keys[i] != '*') {
-						if(obj[keys[i]]) {
+				var values = [],
+					i;
+
+				for (i = 0; i < keys.length; i++) {
+					if (keys[i] != '*') {
+						if (obj[keys[i]]) {
 							values.push(obj[keys[i]]);
 						} else {
 							break;
 						}
 					} else {
-						if(this.parts[i]) {
-							values.push(this.parts[i]);
+						if (_this.parts[i]) {
+							values.push(_this.parts[i]);
 						} else {
 							break;
 						}
@@ -144,26 +163,27 @@
 
 				}
 
-				this.parts = values;
-			}, this);
+				_this.parts = values;
+			});
 
-			MK.on(this, 'urlchange', function() {
-				for(var i = 0; i < keys.length; i++) {
-					if(keys[i] != '*') {
-						MK.set(obj, keys[i], this.parts[i] || null, {
+			on(_this, 'urlchange', function() {
+				var i;
+				for (i = 0; i < keys.length; i++) {
+					if (keys[i] != '*') {
+						MK.set(obj, keys[i], _this.parts[i] || null, {
 							routeSilent: true
 						})
 					}
 				}
 			});
 
-			for(var i = 0; i < keys.length; i++) {
-				parts.push(obj[keys[i]] == '*' ? this.parts[i] : obj[keys[i]] || this.parts[i]);
+			for (i = 0; i < keys.length; i++) {
+				parts.push(obj[keys[i]] == '*' ? _this.parts[i] : obj[keys[i]] || _this.parts[i]);
 			}
 
-			this.parts = parts;
+			_this.parts = parts;
 
-			return this;
+			return _this;
 		}
 	});
 
