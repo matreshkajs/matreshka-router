@@ -1,6 +1,6 @@
 {
 	"name": "matreshka-router",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Router-like plugin for Matreshka.js",
 	"main": "matreshka-router.js",
 	"scripts": {
@@ -21,9 +21,6 @@
 		"url": "https://github.com/matreshkajs/matreshka-router/issues"
 	},
 	"homepage": "https://github.com/matreshkajs/matreshka-router#readme",
-	"dependencies": {
-		"matreshka": "^1.5.2-2"
-	},
 	"devDependencies": {
 		"babel-preset-es2015": "^6.3.13",
 		"babel-preset-stage-0": "^6.3.13",
@@ -41,6 +38,7 @@
 		"karma-phantomjs-launcher": "^0.2.3",
 		"karma-requirejs": "^0.2.3",
 		"phantomjs": "^2.1.2",
-		"requirejs": "^2.1.22"
+		"requirejs": "^2.1.22",
+		"matreshka": "^1.7.0"
 	}
 }
