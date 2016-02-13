@@ -3,6 +3,8 @@ Router-like plugin for Matreshka
 
 [![Coverage Status](https://coveralls.io/repos/github/finom/matreshka-router/badge.svg?branch=master)](https://coveralls.io/github/finom/matreshka-router?branch=master) [![Build Status](https://travis-ci.org/finom/matreshka-router.svg?branch=master)](https://travis-ci.org/finom/matreshka-router) [![npm version](https://badge.fury.io/js/matreshka-router.svg)](https://badge.fury.io/js/matreshka-router)
 
+[Demo](http://jsbin.com/pigihe/10/)
+
 # tl;dr
 
 The plugin turns on two-way data binding between properties and parts of ``location.hash`` hash.
@@ -116,7 +118,7 @@ this.initRouter('/x/y/');
 **2.** If a property gets falsy value then all next listed values will get ``null`` as new value.
 
 ```js
-this.initRoute('/x/y/z/u/');
+this.initRouter('/x/y/z/u/');
 
 this.y = null; // makes this.z and this.u to be null as well
 ```
@@ -175,3 +177,21 @@ Matreshka.Router.hash.path = '/yo/man/';
 ```
 
 By changing these properties you can call needed procedures (update the path, change subscribed objects etc.)
+
+### Methods
+
+- ``subscribe(object, route)`` - subscribes object to changes in properties above.
+- ``init()`` - used for lazy initialization in  ``subscribe`` method (no need to call it manually).
+
+```js
+var customRouter = new Matreshka.Router(),
+	object = {
+		a: 'foo',
+		b: 'bar'
+	};
+
+customRouter.subscribe(object, '/a/b/');
+
+console.log(customRouter.path); // /foo/bar/
+
+```
