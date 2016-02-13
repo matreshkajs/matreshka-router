@@ -3,7 +3,7 @@ Router-like plugin for Matreshka
 
 [![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka-router/badge.svg?branch=master)](https://coveralls.io/github/matreshkajs/matreshka-router?branch=master) [![Build Status](https://travis-ci.org/matreshkajs/matreshka-router.svg?branch=master)](https://travis-ci.org/matreshkajs/matreshka-router) [![npm version](https://badge.fury.io/js/matreshka-router.svg)](https://badge.fury.io/js/matreshka-router)
 
-[Demo](http://output.jsbin.com/pigihe/13/#!/foo/bar/baz/)
+### [Demo](http://output.jsbin.com/pigihe/13/#!/foo/bar/baz/)
 
 # tl;dr
 
