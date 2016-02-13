@@ -180,13 +180,21 @@
 					if (keys[i] != '*') {
 						set(obj, keys[i], _this.parts[i] || null, {
 							routeSilent: true
-						})
+						});
 					}
 				}
 			});
 
 			for (i = 0; i < keys.length; i++) {
 				parts.push(obj[keys[i]] == '*' ? _this.parts[i] : obj[keys[i]] || _this.parts[i]);
+			}
+
+			for (i = 0; i < keys.length; i++) {
+				if(typeof obj[keys[i]] == 'undefined' && _this.parts[i] && obj[keys[i]] != '*') {
+					obj.set(keys[i], _this.parts[i], {
+						routeSilent: true
+					});
+				}
 			}
 
 			_this.parts = parts;
