@@ -5,7 +5,7 @@ Router-like plugin for Matreshka
 
 # tl;dr
 
-The plugin turns on two-way data binding between properties and parts of hash path.
+The plugin turns on two-way data binding between properties and parts of ``location.hash`` hash.
 
 ```js
 this.initRouter('/a/b/c/');
@@ -22,10 +22,16 @@ If you need to use History API instead of hash, pass ``"history"`` as second arg
 ```js
 this.initRouter('/a/b/c/', 'history');
 ```
+
+Installing:
+```
+npm install --save matreshka_router
+```
 -------
 
 
-How does "traditional" routing works? A developer defines a rule (route) and defines a function which will be called when a path fits given rule.
+
+How does "traditional" routing works? A developer defines a rule (route) and defines a function which will be called when current path fits given rule.
 
 ```js
 route("books/:id", id => {
@@ -34,11 +40,10 @@ route("books/:id", id => {
 ```
 
 
-**Disclamer:** this way of routing may not be what you're looking for. If you need full-featured router you can use any library you want (eg [Director](https://github.com/flatiron/director))
 
 The principle of the plugin is the following. You define which part of an URL (both [hash](https://developer.mozilla.org/ru/docs/Web/API/Window/location), and [HTML5 History](https://developer.mozilla.org/ru/docs/Web/API/History_API) are supported) need to be synchronized with given property.
 
-
+**Disclamer:** this way of routing may not be what you're looking for. If you need full-featured router you can use any library you want (eg. [Director](https://github.com/flatiron/director))
 
 For example you need to synchronize ``"x"`` with the first part of ``location.hash`` and ``"y"`` with the second.
 
@@ -56,21 +61,25 @@ this.y = 'bar';
 ...``location.hash`` is automatically replaced by ``#!/foo/bar/``
 
 
-And vice versa: when the URL is changed manually or via back-forward buttons, the properties will be changed automatically.
+And vice versa. When the URL is changed manually or via back-forward buttons, the properties will be changed automatically.
 
 ```js
 location.hash = '#!/baz/qux/';
 
-console.log(this.x, this.y); // ‘bar’, ‘qux’
+console.log(this.x, this.y); // ‘baz’, ‘qux’
 ```
 
-As usually you can listen property changes with [on](matreshka.io/#!Matreshka-on) method.
+## Property changee listening
+
+As usually you can listen property changes with [Matreshka#on](http://matreshka.io/#!Matreshka-on) method.
 
 ```js
 this.on('change:x', handler);
 ```
 
-You can pass a string which contain asterisks to ``initRouter`` if you don't need to synchronize dome part of the path.
+## Asterisk
+
+You can pass a string which contain asterisks to ``initRouter`` if you don't need to synchronize some part of the path.
 
 ```js
 this.initRouter('/x/*/y');
@@ -93,7 +102,6 @@ this.initRouter('/x/*/');
 this.initRouter('/*/y/');
 ```
 
-You need to
 
 It is important to remember two things:
 
