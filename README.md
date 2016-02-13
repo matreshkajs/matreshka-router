@@ -132,7 +132,7 @@ this.initRouter('x/y/z/', 'history');
 ```
 
 
-### Custom objects support
+## Custom objects support
 
 The ``initRoute`` has static alternative which accepts custom object as the first argument. It works just the same.
 
