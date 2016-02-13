@@ -13,7 +13,7 @@ describe('Simple router (API test)', function() {
 	});
 
 	it('changes properties when URL is changed', () => {
-		router.url = '/bar/baz/qux/';
+		router.path = '/bar/baz/qux/';
 
 		expect(obj.a).toEqual('bar');
 		expect(obj.b).toEqual('baz');
@@ -23,8 +23,8 @@ describe('Simple router (API test)', function() {
 
 	it('changes URL when property is changed', () => {
 		obj.b = 'lol';
-		expect(router.url).toEqual('/bar/lol/qux/');
-		expect(router.hashBang).toEqual('#!/bar/lol/qux/');
+		expect(router.path).toEqual('/bar/lol/qux/');
+		expect(router.hashPath).toEqual('#!/bar/lol/qux/');
 	});
 
 	it('sets further parts as null if one of parts is null', () => {

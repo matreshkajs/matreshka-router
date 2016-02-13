@@ -32,8 +32,8 @@
 
 	MK.extend(Router.prototype, {
 		parts: [],
-		url: '/',
-		hashBang: '!#/',
+		path: '/',
+		hashPath: '!#/',
 		init: function() {
 			if (this.initialized) return this;
 
@@ -42,14 +42,14 @@
 				location = document.location;
 
 
-			linkProps(_this, 'parts', 'url', function(v) {
+			linkProps(_this, 'parts', 'path', function(v) {
 				var fixed = v.replace(/\/\//g, '/')
 					.replace(/^\/|\/$/g, '');
 
 				return fixed ? fixed.split('/') : [];
 			});
 
-			linkProps(_this, 'url', 'parts', function(v) {
+			linkProps(_this, 'path', 'parts', function(v) {
 				var parts = [],
 					i;
 				for (i = 0; i < v.length; i++) {
@@ -63,11 +63,11 @@
 				return parts.length ? ('/' + parts.join('/') + '/') : '/';
 			});
 
-			linkProps(_this, 'hashBang', 'url', function(v) {
+			linkProps(_this, 'hashPath', 'path', function(v) {
 				return v && v != '/' ? '#!' + v : '';
 			});
 
-			linkProps(_this, 'url', 'hashBang', function(v) {
+			linkProps(_this, 'path', 'hashPath', function(v) {
 				return v ? v.replace(/^#!/, '') : '';
 			});
 
@@ -87,37 +87,37 @@
 				}
 
 				if (!equals) {
-					MK.trigger(_this, 'urlchange');
+					MK.trigger(_this, 'pathchange');
 				}
 			});
 
 			if (win) {
 				if (type == 'hash') {
 					win.addEventListener('hashchange', function() {
-						set(_this, 'hashBang', location.hash, {
+						set(_this, 'hashPath', location.hash, {
 							hashEvent: true
 						});
 					});
 
-					onDebounce(_this, 'change:hashBang', function(evt) {
+					onDebounce(_this, 'change:hashPath', function(evt) {
 						if (!evt || !evt.hashEvent) {
-							location.hash = _this.hashBang;
+							location.hash = _this.hashPath;
 						}
 					}, true);
 				} else if (type == 'history') {
 					win.addEventListener('popstate', function(evt) {
 						if (evt.state && evt.state.validPush) {
-							set(_this, 'url', location.pathname, {
+							set(_this, 'path', location.pathname, {
 								popEvent: true
 							});
 						}
 					});
 
-					onDebounce(_this, 'change:url', function(evt) {
+					onDebounce(_this, 'change:path', function(evt) {
 						if (!evt || !evt.popEvent) {
 							history.pushState({
 								validPush: true
-							}, '', _this.url + location.hash);
+							}, '', _this.path + location.hash);
 						}
 					}, true);
 				}
@@ -164,7 +164,7 @@
 				_this.parts = values;
 			});
 
-			on(_this, 'urlchange', function() {
+			on(_this, 'pathchange', function() {
 				var i;
 				for (i = 0; i < keys.length; i++) {
 					if (keys[i] != '*') {

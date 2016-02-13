@@ -21,7 +21,7 @@ describe('HTML5 History routing', () => {
 	});
 
 	it('changes properties when URL (pathname) is changed', done => {
-		router.url = '/bar/baz/qux/';
+		router.path = '/bar/baz/qux/';
 
 		setTimeout(() => {
 			expect(obj.a).toEqual('bar');

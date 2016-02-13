@@ -1,6 +1,6 @@
 describe('Summary', () => {
 	beforeEach(() => {
-		MK.Router.hash.url = MK.Router.history.url = '';
+		MK.Router.hash.path = MK.Router.history.path = '';
 	});
 
 	it('has correct instances', () => {
@@ -20,7 +20,7 @@ describe('Summary', () => {
 
 		MK.initRouter(obj, '/a/b/c/');
 
-		expect(MK.Router.hash.url).toEqual('/foo/bar/baz/');
+		expect(MK.Router.hash.path).toEqual('/foo/bar/baz/');
 
 		setTimeout(() => {
 			expect(document.location.hash).toEqual('#!/foo/bar/baz/');
@@ -40,7 +40,7 @@ describe('Summary', () => {
 
 		mk.initRouter('/a/b/c/');
 
-		expect(MK.Router.hash.url).toEqual('/mfoo/mbar/mbaz/');
+		expect(MK.Router.hash.path).toEqual('/mfoo/mbar/mbaz/');
 
 		setTimeout(() => {
 			expect(document.location.hash).toEqual('#!/mfoo/mbar/mbaz/');
@@ -62,8 +62,8 @@ describe('Summary', () => {
 		mk.initRouter('/a/b/c/');
 		mk.initRouter('/d/e/f/', 'history');
 
-		expect(MK.Router.hash.url).toEqual('/cfoo/cbar/cbaz/');
-		expect(MK.Router.history.url).toEqual('/cqux/cpoo/czum/');
+		expect(MK.Router.hash.path).toEqual('/cfoo/cbar/cbaz/');
+		expect(MK.Router.history.path).toEqual('/cqux/cpoo/czum/');
 
 		setTimeout(() => {
 			expect(document.location.hash).toEqual('#!/cfoo/cbar/cbaz/');

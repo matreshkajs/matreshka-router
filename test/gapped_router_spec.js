@@ -16,7 +16,7 @@ describe('Gapped router (API test)', function() {
 	});
 
 	it('changes properties when URL is changed', () => {
-		router.url = '/bar/baz/qux/eggs/bat/lol/';
+		router.path = '/bar/baz/qux/eggs/bat/lol/';
 
 		expect(obj.a).toEqual('bar');
 		expect(obj.b).toEqual('bar');
@@ -28,8 +28,8 @@ describe('Gapped router (API test)', function() {
 
 	it('changes URL when property is changed', () => {
 		obj.c = 'poo';
-		expect(router.url).toEqual('/bar/baz/poo/eggs/bat/lol/');
-		expect(router.hashBang).toEqual('#!/bar/baz/poo/eggs/bat/lol/');
+		expect(router.path).toEqual('/bar/baz/poo/eggs/bat/lol/');
+		expect(router.hashPath).toEqual('#!/bar/baz/poo/eggs/bat/lol/');
 	});
 
 	it('sets further parts as null if one of parts is null', () => {
