@@ -6,7 +6,7 @@ describe('HTML5 History routing', () => {
 
 	beforeAll(() => {
 		router = new MK.Router('history').subscribe(obj, 'a/b/c/d');
-	})
+	});
 
 	it('initializes correctly', done => {
 		expect(obj.a).toEqual('foo');

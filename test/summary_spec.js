@@ -134,4 +134,40 @@ describe('Summary', () => {
 			}, 50);
 		}, 50);
 	});
+
+	it('gets default value of hash on initialization', () => {
+		location.hash = '#!/hfoo/hbar/hbaz/';
+
+		history.pushState({}, '', '/pfoo/pbar/pbaz/');
+
+		var mk = new MK();
+
+		mk.set({
+			a: null,
+			b: null,
+			c: 'quu',
+			d: null,
+			e: null,
+			f: 'boo'
+		});
+
+		mk.initRouter('/a/b/c/');
+		mk.initRouter('/d/e/f/', 'history');
+
+
+
+		setTimeout(() => {
+			expect(document.location.hash).toEqual('#!/hfoo/hbar/quu/');
+			expect(document.location.pathname).toEqual('/pfoo/pbar/boo/');
+
+			expect(mk.a).toEqual('hfoo');
+			expect(mk.b).toEqual('hbar');
+			expect(mk.c).toEqual('quu');
+			expect(mk.d).toEqual('pfoo');
+			expect(mk.e).toEqual('pbar');
+			expect(mk.f).toEqual('boo');
+			
+			done();
+		}, 50);
+	});
 });

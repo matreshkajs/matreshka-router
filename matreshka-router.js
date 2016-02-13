@@ -41,6 +41,17 @@
 				type = _this.type,
 				location = document.location;
 
+			function handleHashChange() {
+				set(_this, 'hashPath', location.hash, {
+					hashEvent: true
+				});
+			}
+
+			function handlePopStateChange() {
+				set(_this, 'path', location.pathname, {
+					popEvent: true
+				});
+			}
 
 			linkProps(_this, 'parts', 'path', function(v) {
 				var fixed = v.replace(/\/\//g, '/')
@@ -52,6 +63,7 @@
 			linkProps(_this, 'path', 'parts', function(v) {
 				var parts = [],
 					i;
+
 				for (i = 0; i < v.length; i++) {
 					if (v[i]) {
 						parts.push(v[i]);
@@ -93,11 +105,9 @@
 
 			if (win) {
 				if (type == 'hash') {
-					win.addEventListener('hashchange', function() {
-						set(_this, 'hashPath', location.hash, {
-							hashEvent: true
-						});
-					});
+					handleHashChange();
+
+					win.addEventListener('hashchange', handleHashChange);
 
 					onDebounce(_this, 'change:hashPath', function(evt) {
 						if (!evt || !evt.hashEvent) {
@@ -105,11 +115,11 @@
 						}
 					}, true);
 				} else if (type == 'history') {
+					handlePopStateChange();
+
 					win.addEventListener('popstate', function(evt) {
 						if (evt.state && evt.state.validPush) {
-							set(_this, 'path', location.pathname, {
-								popEvent: true
-							});
+							handlePopStateChange();
 						}
 					});
 
