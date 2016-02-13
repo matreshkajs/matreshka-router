@@ -1,5 +1,5 @@
 {
-	"name": "matreshka_router",
+	"name": "matreshka-router",
 	"version": "0.0.1",
 	"description": "Router-like plugin for Matreshka.js",
 	"main": "matreshka-router.js",

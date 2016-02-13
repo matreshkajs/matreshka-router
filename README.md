@@ -1,7 +1,7 @@
 Router-like plugin for Matreshka
 ============
 
-[![Coverage Status](https://coveralls.io/repos/github/finom/matreshka_router/badge.svg?branch=master)](https://coveralls.io/github/finom/matreshka_router?branch=master) [![Build Status](https://travis-ci.org/finom/matreshka_router.svg?branch=master)](https://travis-ci.org/finom/matreshka_router) [![npm version](https://badge.fury.io/js/matreshka_router.svg)](https://badge.fury.io/js/matreshka_router)
+[![Coverage Status](https://coveralls.io/repos/github/finom/matreshka_router/badge.svg?branch=master)](https://coveralls.io/github/finom/matreshka_router?branch=master) [![Build Status](https://travis-ci.org/finom/matreshka_router.svg?branch=master)](https://travis-ci.org/finom/matreshka_router) [![npm version](https://badge.fury.io/js/matreshka_router.svg)](https://badge.fury.io/js/matreshka-router)
 
 # tl;dr
 
@@ -25,7 +25,7 @@ this.initRouter('/a/b/c/', 'history');
 
 Installing:
 ```
-npm install --save matreshka_router
+npm install --save matreshka-router
 ```
 -------
 
