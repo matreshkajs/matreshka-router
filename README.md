@@ -1,7 +1,7 @@
 Router-like plugin for Matreshka
 ============
 
-[![Coverage Status](https://coveralls.io/repos/github/finom/matreshka_router/badge.svg?branch=master)](https://coveralls.io/github/finom/matreshka_router?branch=master) [![Build Status](https://travis-ci.org/finom/matreshka_router.svg?branch=master)](https://travis-ci.org/finom/matreshka_router) [![npm version](https://badge.fury.io/js/matreshka-router.svg)](https://badge.fury.io/js/matreshka-router)
+[![Coverage Status](https://coveralls.io/repos/github/finom/matreshka-router/badge.svg?branch=master)](https://coveralls.io/github/finom/matreshka-router?branch=master) [![Build Status](https://travis-ci.org/finom/matreshka-router.svg?branch=master)](https://travis-ci.org/finom/matreshka-router) [![npm version](https://badge.fury.io/js/matreshka-router.svg)](https://badge.fury.io/js/matreshka-router)
 
 # tl;dr
 
