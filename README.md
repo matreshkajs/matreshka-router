@@ -43,7 +43,7 @@ route("books/:id", id => {
 
 The principle of the plugin is the following. You define which part of an URL (both [hash](https://developer.mozilla.org/ru/docs/Web/API/Window/location), and [HTML5 History](https://developer.mozilla.org/ru/docs/Web/API/History_API) are supported) need to be synchronized with given property.
 
-**Disclamer:** this way of routing may not be what you're looking for. If you need full-featured router you can use any library you want (eg. [Director](https://github.com/flatiron/director))
+**Disclamer:** this way of routing may not be what you're looking for. If you need full-featured router you can use any library you want (eg. [Director](https://github.com/flatiron/director)).
 
 For example you need to synchronize ``"x"`` with the first part of ``location.hash`` and ``"y"`` with the second.
 
@@ -69,7 +69,7 @@ location.hash = '#!/baz/qux/';
 console.log(this.x, this.y); // ‘baz’, ‘qux’
 ```
 
-## Property changee listening
+## Property change listening
 
 As usually you can listen property changes with [Matreshka#on](http://matreshka.io/#!Matreshka-on) method.
 
@@ -102,10 +102,9 @@ this.initRouter('/x/*/');
 this.initRouter('/*/y/');
 ```
 
+## Two things to remember
 
-It is important to remember two things:
-
-**1.** If a property is truthy URL will be changed immediately after ``initRouter`` call
+**1.** If a property has truthy value then URL will be changed immediately after ``initRouter`` call.
 
 
 ```js
@@ -149,22 +148,27 @@ obj.c = 'baz';
 
 ## Additional information
 
+### ``Matreshka.Router`` class
+
 The core of Matreshka Router is powered by  ``Matreshka.Router`` class. It accepts only one argument - router type (``"hash"``, ``"history"`` or custom string).
 
-By default the plugin creates two instances of ``Matreshka.Router`` with types ``hash`` and ``history``. They are contained in ``Matreshka.Router.hash`` and ``Matreshka.Router.history``. The plugin uses lazy initialization so when you just attach the script onto webpage you do, the plugin does nothing. For these two types of instanceas the singletone pattern is used. That means when you're trying to create another instance of ``hash`` routing via ``new Matreshka.Router('hash')``, the ``Matreshka.Router.hash`` will be returned instead of new instance creation. This logic centralizes URL handling, gives positive effect to the performance and doesn't allow to get collisions. Objects which are handled by ``initRouter`` just subscribe to the changes of needed router type.
+By default, the plugin creates two instances of ``Matreshka.Router`` with types ``hash`` and ``history``. They are contained in ``Matreshka.Router.hash`` and ``Matreshka.Router.history``. The plugin uses lazy initialization so when you just attach the script onto webpage, the plugin does nothing.
+
+For these two types of instances the singletone pattern is used. That means when you're trying to create another instance of ``hash`` routing via ``new Matreshka.Router('hash')``, the ``Matreshka.Router.hash`` will be returned instead of new instance creation. This logic centralizes URL handling, gives positive effect to the performance and doesn't allow to get collisions. Objects which are handled by ``initRouter`` just subscribe to the changes of needed type of router.
+
 
 
 Custom instances (non-hash and non-history) of ``Matreshka.Router`` can be created manually in case if you make code outside of the browser environment of you need to generate some URL for further usage. At this case changes of target properties don't affect on ``hash`` and don't call ``pushState``.
 
-``Matreshka.Router`` instances has 3 ptoperties.
+### Properties
 
-``path`` - contains actual URL, eg ``/foo/bar/baz/``.
+``Matreshka.Router`` instances has 3 properties.
 
-``hashPath`` - contains actual URL + hashbang, eg ``#!/foo/bar/baz/``
+- ``path`` - contains actual URL, eg ``/foo/bar/baz/``.
+- ``hashPath`` - contains actual URL and hashbang as a prefix, eg ``#!/foo/bar/baz/``
+- ``parts`` - contains an array of all parts of the path, eg ``[‘foo’, ‘bar’, ‘baz’]``.
 
-``parts`` - contains an array of all parts of the path, eg ``[‘foo’, ‘bar’, ‘baz’]``.
-
-All these properties are created by using [linkProps](https://matreshka.io/#!Matreshka-linkProps) which means when you change one propery, the others are changed automatically.
+All these properties are created using [linkProps](https://matreshka.io/#!Matreshka-linkProps), which means when you change one property, the others are changed automatically.
 
 ```js
 Matreshka.Router.hash.path = '/yo/man/';
