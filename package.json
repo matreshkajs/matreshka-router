@@ -9,7 +9,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/finom/matreshka_router.git"
+		"url": "git+https://github.com/matreshkajs/matreshka-router.git"
 	},
 	"keywords": [
 		"matreshka",
@@ -18,9 +18,9 @@
 	"author": "Andrey Gubanov",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/finom/matreshka_router/issues"
+		"url": "https://github.com/matreshkajs/matreshka-router/issues"
 	},
-	"homepage": "https://github.com/finom/matreshka_router#readme",
+	"homepage": "https://github.com/matreshkajs/matreshka-router#readme",
 	"dependencies": {
 		"matreshka": "^1.5.2-2"
 	},
