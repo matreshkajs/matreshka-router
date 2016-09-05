@@ -12,7 +12,7 @@
     "lint": "eslint ./test ./src",
     "compile-npm": "rimraf npm && babel src -d npm",
     "bundle": "rimraf bundle && webpack",
-    "release": "npm run compile-npm && npm run bundle && npm publish && git commit --allow-empty -m '${npm_package_version}' && git push origin next",
+    "release": "npm run bundle && git commit --allow-empty -m '${npm_package_version}' && git push origin next && npm run compile-npm && npm publish",
     "semantic-release": "semantic-release pre && npm run release && semantic-release post",
     "commit": "git-cz"
   },
