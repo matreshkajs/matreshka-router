@@ -1,6 +1,6 @@
 {
   "name": "matreshka-router",
-  "varsion": "0.0.0-auto",
+  "version": "0.0.0-auto",
   "description": "Router-like plugin for Matreshka.js",
   "main": "npm/index",
   "scripts": {
