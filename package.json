@@ -5,14 +5,14 @@
   "main": "npm/index",
   "scripts": {
     "install": "if-env CI=true || git update-index --skip-worktree ./bundle/*",
-    "test": "npm run unit && npm run lint",  
+    "test": "npm run unit && npm run lint",
     "unit": "babel-node node_modules/.bin/babel-istanbul cover test/index.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "check-updates": "ncu",
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
     "lint": "eslint ./test ./src",
     "compile-npm": "rimraf npm && babel src -d npm",
     "bundle": "rimraf bundle && webpack",
-    "release": "npm run bundle && git config user.email 'andrey.a.gubanov@gmail.com' && git config user.name 'Andrey Gubanov (his digital copy)' && git commit --allow-empty -m 'chore: ${npm_package_version}' && git push https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git next && npm run compile-npm && npm publish",
+    "release": "npm run bundle && git config user.email 'andrey.a.gubanov@gmail.com' && git config user.name 'Andrey Gubanov (his digital copy)' && git commit --allow-empty -am 'chore: ${npm_package_version}' && git push https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git next && npm run compile-npm && npm publish",
     "semantic-release": "semantic-release pre && npm run release && semantic-release post",
     "commit": "git-cz"
   },
