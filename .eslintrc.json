@@ -8,11 +8,13 @@
     "rules": {
         "indent": ["error", 4],
         "no-var": "error",
-        "comma-dangle": 0,
-        "import/no-extraneous-dependencies": 0,
-        "import/no-unresolved": 0
+        "comma-dangle": ["error", "never"],
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
     },
     "env": {
-        "browser": true
+        "jasmine": true
+    },
+    "globals": {
+        "window": true
     }
 }

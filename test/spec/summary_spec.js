@@ -1,150 +1,152 @@
 import Router from '../../src/router';
 import initRouter from '../../src/';
 
-const { document, location, history } = window;
+const { document, location, history, Event } = window;
 
 describe('Summary', () => {
-	beforeEach(() => {
-		Router.hash.path = Router.history.path = '';
-	});
+    beforeEach(() => {
+        Router.hash.path = Router.history.path = '';
+    });
 
-	it('has correct instances', () => {
-		expect(Router.hash instanceof Router).toBeTruthy();
-		expect(Router.history instanceof Router).toBeTruthy();
+    it('has correct instances', () => {
+        expect(Router.hash instanceof Router).toBeTruthy();
+        expect(Router.history instanceof Router).toBeTruthy();
 
-		expect(Router.hash.type).toEqual('hash');
-		expect(Router.history.type).toBeTruthy('history');
-	});
+        expect(Router.hash.type).toEqual('hash');
+        expect(Router.history.type).toBeTruthy('history');
+    });
 
-	it('allows to subscribe via static method', done => {
-		var obj = {
-			a: 'foo',
-			b: 'bar',
-			c: 'baz'
-		};
+    it('allows to subscribe via static method', done => {
+        const obj = {
+            a: 'foo',
+            b: 'bar',
+            c: 'baz'
+        };
 
-		initRouter(obj, '/a/b/c/');
+        initRouter(obj, '/a/b/c/');
 
-		expect(Router.hash.path).toEqual('/foo/bar/baz/');
+        expect(Router.hash.path).toEqual('/foo/bar/baz/');
 
-		setTimeout(() => {
-			expect(document.location.hash).toEqual('#!/foo/bar/baz/');
-			done();
-		}, 50);
+        setTimeout(() => {
+            expect(document.location.hash).toEqual('#!/foo/bar/baz/');
+            done();
+        }, 50);
+    });
 
-	});
+    it('doesn\'t make collisions when an object'
+        + 'subscribes to both hash and history router', done => {
+        const obj = {
+            a: 'cfoo',
+            b: 'cbar',
+            c: 'cbaz',
+            d: 'cqux',
+            e: 'cpoo',
+            f: 'czum'
+        };
 
-	it(`doesn't make collisions when an object subscribes to both hash and history router`, done => {
-		var obj = {
-			a: 'cfoo',
-			b: 'cbar',
-			c: 'cbaz',
-			d: 'cqux',
-			e: 'cpoo',
-			f: 'czum'
-		};
+        initRouter(obj, '/a/b/c/');
+        initRouter(obj, '/d/e/f/', 'history');
 
-		initRouter(obj, '/a/b/c/');
-		initRouter(obj, '/d/e/f/', 'history');
+        expect(Router.hash.path).toEqual('/cfoo/cbar/cbaz/');
+        expect(Router.history.path).toEqual('/cqux/cpoo/czum/');
 
-		expect(Router.hash.path).toEqual('/cfoo/cbar/cbaz/');
-		expect(Router.history.path).toEqual('/cqux/cpoo/czum/');
+        setTimeout(() => {
+            expect(document.location.hash).toEqual('#!/cfoo/cbar/cbaz/');
+            expect(document.location.pathname).toEqual('/cqux/cpoo/czum/');
+            done();
+        }, 50);
+    });
 
-		setTimeout(() => {
-			expect(document.location.hash).toEqual('#!/cfoo/cbar/cbaz/');
-			expect(document.location.pathname).toEqual('/cqux/cpoo/czum/');
-			done();
-		}, 50);
-	});
+    it('allows to walk thru the history via hash router', done => {
+        const obj = {
+            a: 'wfoo',
+            b: 'wbar',
+            c: 'wbaz'
+        };
 
-	it('allows to walk thru the history via hash router', done => {
-		var obj = {
-			a: 'wfoo',
-			b: 'wbar',
-			c: 'wbaz'
-		};
+        initRouter(obj, '/a/b/c/');
 
-		initRouter(obj, '/a/b/c/');
+        setTimeout(() => {
+            expect(document.location.hash).toEqual('#!/wfoo/wbar/wbaz/');
+            obj.a = 'wzoo';
 
-		setTimeout(() => {
-			expect(document.location.hash).toEqual('#!/wfoo/wbar/wbaz/');
-			obj.a = 'wzoo';
+            setTimeout(() => {
+                expect(document.location.hash).toEqual('#!/wzoo/wbar/wbaz/');
+                expect(obj.a).toEqual('wzoo');
+                history.back();
 
-			setTimeout(() => {
-				expect(document.location.hash).toEqual('#!/wzoo/wbar/wbaz/');
-				expect(obj.a).toEqual('wzoo');
-				history.back();
+                setTimeout(() => {
+                    expect(document.location.hash).toEqual('#!/wfoo/wbar/wbaz/');
 
-				setTimeout(() => {
-					expect(document.location.hash).toEqual('#!/wfoo/wbar/wbaz/');
+                    expect(obj.a).toEqual('wfoo');
+                    done();
+                }, 50);
+            }, 50);
+        }, 50);
+    });
 
-					expect(obj.a).toEqual('wfoo');
-					done();
-				}, 50);
-			}, 50);
-		}, 50);
-	});
+    it('allows to walk thru the history via history router', done => {
+        const obj = {
+            a: 'wqux',
+            b: 'wpoo',
+            c: 'wzum'
+        };
 
-	it('allows to walk thru the history via history router', done => {
-		var obj = {
-			a: 'wqux',
-			b: 'wpoo',
-			c: 'wzum'
-		};
+        initRouter(obj, '/a/b/c/', 'history');
 
-		initRouter(obj, '/a/b/c/', 'history');
+        setTimeout(() => {
+            expect(document.location.pathname).toEqual('/wqux/wpoo/wzum/');
+            obj.a = 'wzoo';
 
-		setTimeout(() => {
-			expect(document.location.pathname).toEqual('/wqux/wpoo/wzum/');
-			obj.a = 'wzoo';
+            setTimeout(() => {
+                expect(document.location.pathname).toEqual('/wzoo/wpoo/wzum/');
+                expect(obj.a).toEqual('wzoo');
 
-			setTimeout(() => {
-				expect(document.location.pathname).toEqual('/wzoo/wpoo/wzum/');
-				expect(obj.a).toEqual('wzoo');
+                history.back();
 
-				history.back();
+                setTimeout(() => {
+                    expect(document.location.pathname).toEqual('/wqux/wpoo/wzum/');
 
-				setTimeout(() => {
-					expect(document.location.pathname).toEqual('/wqux/wpoo/wzum/');
+                    expect(obj.a).toEqual('wqux');
 
-					expect(obj.a).toEqual('wqux');
+                    done();
+                }, 50);
+            }, 50);
+        }, 50);
+    });
 
-					done();
-				}, 50);
+    it('gets default value of hash on initialization', done => {
+        history.pushState({}, '', '/pfoo/pbar/pbaz/');
+        location.hash = '#!/hfoo/hbar/hbaz/';
 
-			}, 50);
-		}, 50);
-	});
+        const popstateEvent = new Event('popstate');
+        popstateEvent.state = {
+            validPush: true
+        };
+        window.dispatchEvent(popstateEvent);
 
-	it('gets default value of hash on initialization', () => {
-		location.hash = '#!/hfoo/hbar/hbaz/';
+        const obj = {
+            c: 'quu',
+            f: 'boo'
+        };
 
-		history.pushState({}, '', '/pfoo/pbar/pbaz/');
+        setTimeout(() => {
+            initRouter(obj, '/a/b/c/');
+            initRouter(obj, '/d/e/f/', 'history');
 
-		var obj = {
-			a: null,
-			b: null,
-			c: 'quu',
-			d: null,
-			e: null,
-			f: 'boo'
-		};
+            setTimeout(() => {
+                expect(location.hash).toEqual('#!/hfoo/hbar/quu/');
+                expect(location.pathname).toEqual('/pfoo/pbar/boo/');
 
-		initRouter(obj, '/a/b/c/');
-		initRouter(obj, '/d/e/f/', 'history');
+                expect(obj.a).toEqual('hfoo');
+                expect(obj.b).toEqual('hbar');
+                expect(obj.c).toEqual('quu');
+                expect(obj.d).toEqual('pfoo');
+                expect(obj.e).toEqual('pbar');
+                expect(obj.f).toEqual('boo');
 
-		setTimeout(() => {
-			expect(document.location.hash).toEqual('#!/hfoo/hbar/quu/');
-			expect(document.location.pathname).toEqual('/pfoo/pbar/boo/');
-
-			expect(obj.a).toEqual('hfoo');
-			expect(obj.b).toEqual('hbar');
-			expect(obj.c).toEqual('quu');
-			expect(obj.d).toEqual('pfoo');
-			expect(obj.e).toEqual('pbar');
-			expect(obj.f).toEqual('boo');
-
-			done();
-		}, 50);
-	});
+                done();
+            }, 50);
+        }, 50);
+    });
 });

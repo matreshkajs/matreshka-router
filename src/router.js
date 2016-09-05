@@ -4,8 +4,6 @@ import onDebounce from 'matreshka/ondebounce';
 import trigger from 'matreshka/trigger';
 import set from 'matreshka/set';
 
-const noDebounceFlag = { debounceCalc: false };
-
 function handleHashChange(router) {
     set(router, 'hashPath', window.location.hash, {
         hashEvent: true
@@ -30,54 +28,68 @@ class Router {
         }
 
         this.type = type;
+
+        return this;
     }
 
 
     init() {
-        if (this.initialized) return this;
+        if (this.initialized) {
+            return this;
+        }
 
-        var _this = this,
-            type = _this.type;
+        const { type } = this;
 
-        calc(_this, 'parts', 'path', v => {
-            var fixed = v.replace(/\/\//g, '/')
-                .replace(/^\/|\/$/g, '');
+        calc(this, {
+            parts: {
+                source: 'path',
+                handler(path) {
+                    const fixed = path.replace(/\/\//g, '/')
+                        .replace(/^\/|\/$/g, '');
 
-            return fixed ? fixed.split('/') : [];
-        }, noDebounceFlag);
+                    return fixed ? fixed.split('/') : [];
+                }
+            },
+            path: {
+                source: 'parts',
+                handler(parts) {
+                    const nonEmptyParts = [];
 
-        calc(_this, 'path', 'parts', v => {
-            var parts = [],
-                i;
+                    for (let i = 0; i < parts.length; i++) {
+                        if (parts[i]) {
+                            nonEmptyParts.push(parts[i]);
+                        } else {
+                            break;
+                        }
+                    }
 
-            for (i = 0; i < v.length; i++) {
-                if (v[i]) {
-                    parts.push(v[i]);
-                } else {
-                    break;
+                    return nonEmptyParts.length ? (`/${nonEmptyParts.join('/')}/`) : '/';
                 }
             }
+        }, { debounceCalc: false });
 
-            return parts.length ? ('/' + parts.join('/') + '/') : '/';
-        }, noDebounceFlag);
+        calc(this, {
+            hashPath: {
+                source: 'path',
+                handler(path) {
+                    return path && path !== '/' ? `#!${path}` : '';
+                }
+            },
+            path: {
+                source: 'hashPath',
+                handler(hashPath) {
+                    return hashPath ? hashPath.replace(/^#!/, '') : '';
+                }
+            }
+        }, { debounceCalc: false });
 
-        calc(_this, 'hashPath', 'path', v => {
-            return v && v != '/' ? '#!' + v : '';
-        }, noDebounceFlag);
-
-        calc(_this, 'path', 'hashPath', v => {
-            return v ? v.replace(/^#!/, '') : '';
-        }, noDebounceFlag);
-
-        on(_this, 'change:parts', evt => {
-            var value = evt.value,
-                prevValue = evt.previousValue,
-                equals = value.length == prevValue.length,
-                i;
+        on(this, 'change:parts', evt => {
+            const { value, previousValue } = evt;
+            let equals = value.length === previousValue.length;
 
             if (equals) {
-                for (i = 0; i < value.length; i++) {
-                    if (value[i] != prevValue[i]) {
+                for (let i = 0; i < value.length; i++) {
+                    if (value[i] !== previousValue[i]) {
                         equals = false;
                         break;
                     }
@@ -85,24 +97,24 @@ class Router {
             }
 
             if (!equals) {
-                trigger(_this, 'pathchange');
+                trigger(this, 'pathchange');
             }
         });
 
         if (typeof window !== 'undefined') {
-            const { document, history, location } = window;
+            const { history, location } = window;
 
-            if (type == 'hash') {
+            if (type === 'hash') {
                 handleHashChange(this);
 
                 window.addEventListener('hashchange', () => handleHashChange(this));
 
-                onDebounce(_this, 'change:hashPath', evt => {
+                onDebounce(this, 'change:hashPath', evt => {
                     if (!evt || !evt.hashEvent) {
-                        location.hash = _this.hashPath;
+                        location.hash = this.hashPath;
                     }
                 }, true);
-            } else if (type == 'history') {
+            } else if (type === 'history') {
                 handlePopStateChange(this);
 
                 window.addEventListener('popstate', evt => {
@@ -111,45 +123,43 @@ class Router {
                     }
                 });
 
-                onDebounce(_this, 'change:path', evt => {
+                onDebounce(this, 'change:path', evt => {
                     if (!evt || !evt.popEvent) {
                         history.pushState({
                             validPush: true
-                        }, '', _this.path + location.hash);
+                        }, '', this.path + location.hash);
                     }
                 }, true);
             }
         }
 
-        _this.initialized = true;
+        this.initialized = true;
 
-        return _this;
-
+        return this;
     }
 
     subscribe(obj, route) {
-        var _this = this.init(),
-            keys = route.replace(/\/\//g, '/').replace(/^\/|\/$/g, '').split('/'),
-            changeEvents = [],
-            filteredKeys = keys.filter(key => key != '*'),
-            parts = [],
-            i;
+        const keys = route.replace(/\/\//g, '/').replace(/^\/|\/$/g, '').split('/');
+        const changeEvents = [];
+        const filteredKeys = keys.filter(key => key !== '*');
+        const parts = [];
 
-        for(i = 0; i < keys.length; i++) {
-            if(keys[i] != '*') {
-                changeEvents.push('change:' + keys[i]);
-            }
+        this.init();
+
+        for (let i = 0; i < filteredKeys.length; i++) {
+            const key = filteredKeys[i];
+            changeEvents.push(`change:${key}`);
         }
 
         on(obj, changeEvents, evt => {
-            if (evt && evt.routeSilent) return;
+            if (evt && evt.routeSilent) {
+                return;
+            }
 
-            var values = [],
-                i,
-                value;
+            const values = [];
 
-            for (i = 0; i < keys.length; i++) {
-                value = keys[i] == '*' ? _this.parts[i] : obj[keys[i]];
+            for (let i = 0; i < keys.length; i++) {
+                const value = keys[i] === '*' ? this.parts[i] : obj[keys[i]];
 
                 if (value) {
                     values.push(value);
@@ -158,40 +168,38 @@ class Router {
                 }
             }
 
-            _this.parts = values;
+            this.parts = values;
         });
 
-        on(_this, 'pathchange', () => {
-            var i;
-            for (i = 0; i < keys.length; i++) {
-                if (keys[i] != '*') {
-                    set(obj, keys[i], _this.parts[i] || null, {
+        for (let i = 0; i < keys.length; i++) {
+            parts.push(obj[keys[i]] === '*' ? this.parts[i] : obj[keys[i]] || this.parts[i]);
+        }
+
+        for (let i = 0; i < keys.length; i++) {
+            if (typeof obj[keys[i]] === 'undefined' && this.parts[i] && keys[i] !== '*') {
+                set(obj, keys[i], this.parts[i], {
+                    routeSilent: true
+                });
+            }
+        }
+
+        on(this, 'pathchange', () => {
+            for (let i = 0; i < keys.length; i++) {
+                if (keys[i] !== '*') {
+                    set(obj, keys[i], this.parts[i] || null, {
                         routeSilent: true
                     });
                 }
             }
         });
 
-        for (i = 0; i < keys.length; i++) {
-            parts.push(obj[keys[i]] == '*' ? _this.parts[i] : obj[keys[i]] || _this.parts[i]);
-        }
+        this.parts = parts;
 
-        for (i = 0; i < keys.length; i++) {
-            if(typeof obj[keys[i]] == 'undefined' && _this.parts[i] && obj[keys[i]] != '*') {
-                obj.set(keys[i], _this.parts[i], {
-                    routeSilent: true
-                });
-            }
-        }
-
-        _this.parts = parts;
-
-        return _this;
+        return this;
     }
 }
 
 Router.history = new Router('history');
 Router.hash = new Router('hash');
-
 
 module.exports = Router;

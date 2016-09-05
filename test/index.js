@@ -1,5 +1,4 @@
 const Jasmine = require('jasmine');
-const path = require('path');
 const { jsdom } = require('jsdom');
 const SpecReporter = require('jasmine-spec-reporter');
 
@@ -12,7 +11,7 @@ global.window = jsdom('<!doctype html><html><body></body></html>', {
 jasmine.loadConfig({
     spec_dir: 'test/spec',
     spec_files: [
-        '**/*_spec.js'
+        '**/summary_spec.js'
     ]
 });
 
