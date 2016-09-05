@@ -1,11 +1,11 @@
 {
   "name": "matreshka-router",
   "version": "0.0.0-auto",
-  "description": "Router-like plugin for Matreshka.js", 
+  "description": "Router-like plugin for Matreshka.js",
   "main": "npm/index",
   "scripts": {
     "install": "if-env CI=true || git update-index --skip-worktree ./bundle/*",
-    "test": "npm run unit && npm run lint",
+    "test": "npm run unit && npm run lint", 
     "unit": "babel-node node_modules/.bin/babel-istanbul cover test/index.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "check-updates": "ncu",
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
