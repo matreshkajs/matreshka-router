@@ -29,11 +29,11 @@ module.exports = {
     externals,
 
     plugins: [
-        new NamedAMDModulesPlugin()
-        /*new webpack.optimize.UglifyJsPlugin({
+        new NamedAMDModulesPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             }
-        })*/
+        })
     ]
 };
