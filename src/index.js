@@ -7,6 +7,7 @@ function initRouter(obj, route, type) {
     return obj;
 }
 
+/* istanbul ignore if */
 if (typeof Matreshka === 'function') {
     Matreshka.Router = Router;
     Matreshka.initRouter = initRouter;

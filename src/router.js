@@ -23,6 +23,7 @@ class Router {
 
     constructor(type) {
         // singletone pattern for history and hash router
+        /* istanbul ignore if */
         if (type in Router) {
             return Router[type];
         }
