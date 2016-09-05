@@ -10,7 +10,7 @@
     "check-updates": "ncu",
     "upgrade": "npm run check-updates -- --upgradeAll && npm install",
     "lint": "eslint ./test ./src",
-    "compile-npm": "rimraf npm && babel src -d npm",
+    "compile-npm": "rimraf npm && babel src -d npm", 
     "bundle": "rimraf bundle && webpack",
     "release": "npm run bundle && npm run compile-npm && npm publish",
     "semantic-release": "semantic-release pre && npm run release && semantic-release post",
