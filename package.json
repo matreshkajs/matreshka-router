@@ -18,7 +18,18 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "cz-simple-conventional-changelog"
+    },
+    "validate-commit-msg": {
+      "types": [
+        "feat",
+        "fix",
+        "refactor",
+        "perf",
+        "test",
+        "chore",
+        "revert"
+      ]
     },
     "ghooks": {
       "commit-msg": "validate-commit-msg"
@@ -53,8 +64,9 @@
     "babel-preset-stage-2": "^6.13.0",
     "commitizen": "^2.8.6",
     "coveralls": "^2.11.12",
-    "cz-conventional-changelog": "^1.2.0",
+    "cz-simple-conventional-changelog": "0.0.0",
     "eslint": "^3.4.0",
+    "ghooks": "^1.3.2",
     "if-env": "^1.0.0",
     "jasmine": "^2.5.0",
     "jasmine-spec-reporter": "^2.7.0",
@@ -63,6 +75,7 @@
     "npm-check-updates": "^2.8.0",
     "rimraf": "^2.5.4",
     "semantic-release": "^4.3.5",
+    "validate-commit-msg": "^2.8.0",
     "webpack": "^1.13.2",
     "webpack-generate-umd-externals": "0.0.0"
   },
