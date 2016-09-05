@@ -13,7 +13,7 @@
     "compile-npm": "rimraf npm && babel src -d npm",
     "bundle": "rimraf bundle && webpack",
     "release": "npm run compile-npm && npm publish",
-    "release-bundle": "npm run bundle && git config user.email 'andrey.a.gubanov@gmail.com' && git config user.name 'Andrey Gubanov (his digital copy)' && git add bundle && git commit --allow-empty -m 'chore: Publishing new version' && git push https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git HEAD:next",
+    "release-bundle": "npm run bundle && git config user.email 'andrey.a.gubanov@gmail.com' && git config user.name 'Andrey Gubanov (his digital copy)' && git add bundle/* && git commit --allow-empty -m 'chore: Publishing new version' && git push https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git HEAD:next",
     "semantic-release": "semantic-release pre && npm run release && semantic-release post && npm run release-bundle",
     "commit": "git-cz"
   },
