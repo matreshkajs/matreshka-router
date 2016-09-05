@@ -1,7 +1,7 @@
 {
   "name": "matreshka-router",
   "version": "0.0.0-auto",
-  "description": "Router-like plugin for Matreshka.js",
+  "description": "Router-like plugin for Matreshka.js", 
   "main": "npm/index",
   "scripts": {
     "install": "if-env CI=true || git update-index --skip-worktree ./bundle/*",
