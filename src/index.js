@@ -9,7 +9,7 @@ function initRouter(obj, route, type) {
 
 /* istanbul ignore if */
 if (typeof Matreshka === 'function') {
-	foobar(); // eslint-disable-line
+	alert('foobar'); // eslint-disable-line
     Matreshka.Router = Router;
     Matreshka.initRouter = initRouter;
 }
