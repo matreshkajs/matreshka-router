@@ -1,3 +1,7 @@
+import Router from '../../src/router';
+
+const { document, location } = window;
+
 describe('HTML5 History routing', () => {
 	var obj = {
 		a: 'foo'
@@ -5,7 +9,7 @@ describe('HTML5 History routing', () => {
 	router;
 
 	beforeAll(() => {
-		router = new MK.Router('history').subscribe(obj, 'a/b/c/d');
+		router = new Router('history').subscribe(obj, 'a/b/c/d');
 	});
 
 	it('initializes correctly', done => {

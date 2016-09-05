@@ -1,8 +1,12 @@
+import Router from '../../src/router';
+
+const { document } = window;
+
 describe('Hash routing', () => {
 	var obj = {
 		a: 'foo'
 	},
-	router = new MK.Router('hash').subscribe(obj, 'a/b/c/d');
+	router = new Router('hash').subscribe(obj, 'a/b/c/d');
 
 	it('initializes correctly', done => {
 		expect(obj.a).toEqual('foo');

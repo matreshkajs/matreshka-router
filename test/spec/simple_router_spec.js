@@ -1,8 +1,10 @@
+import Router from '../../src/router';
+
 describe('Simple router (API test)', function() {
 	var obj = {
 		a: 'foo'
 	},
-	router = new MK.Router(null).subscribe(obj, 'a/b/c/d');
+	router = new Router(null).subscribe(obj, 'a/b/c/d');
 
 
 	it('initializes correctly', () => {

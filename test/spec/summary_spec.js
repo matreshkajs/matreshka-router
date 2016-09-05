@@ -1,14 +1,19 @@
+import Router from '../../src/router';
+import initRouter from '../../src/';
+
+const { document, location, history } = window;
+
 describe('Summary', () => {
 	beforeEach(() => {
-		MK.Router.hash.path = MK.Router.history.path = '';
+		Router.hash.path = Router.history.path = '';
 	});
 
 	it('has correct instances', () => {
-		expect(MK.Router.hash instanceof MK.Router).toBeTruthy();
-		expect(MK.Router.history instanceof MK.Router).toBeTruthy();
+		expect(Router.hash instanceof Router).toBeTruthy();
+		expect(Router.history instanceof Router).toBeTruthy();
 
-		expect(MK.Router.hash.type).toEqual('hash');
-		expect(MK.Router.history.type).toBeTruthy('history');
+		expect(Router.hash.type).toEqual('hash');
+		expect(Router.history.type).toBeTruthy('history');
 	});
 
 	it('allows to subscribe via static method', done => {
@@ -18,9 +23,9 @@ describe('Summary', () => {
 			c: 'baz'
 		};
 
-		MK.initRouter(obj, '/a/b/c/');
+		initRouter(obj, '/a/b/c/');
 
-		expect(MK.Router.hash.path).toEqual('/foo/bar/baz/');
+		expect(Router.hash.path).toEqual('/foo/bar/baz/');
 
 		setTimeout(() => {
 			expect(document.location.hash).toEqual('#!/foo/bar/baz/');
@@ -29,41 +34,21 @@ describe('Summary', () => {
 
 	});
 
-	it('allows to subscribe via instance method', done => {
-		var mk = new MK();
-
-		mk.set({
-			a: 'mfoo',
-			b: 'mbar',
-			c: 'mbaz'
-		});
-
-		mk.initRouter('/a/b/c/');
-
-		expect(MK.Router.hash.path).toEqual('/mfoo/mbar/mbaz/');
-
-		setTimeout(() => {
-			expect(document.location.hash).toEqual('#!/mfoo/mbar/mbaz/');
-			done();
-		}, 50);
-	});
-
 	it(`doesn't make collisions when an object subscribes to both hash and history router`, done => {
-		var mk = new MK();
-		mk.set({
+		var obj = {
 			a: 'cfoo',
 			b: 'cbar',
 			c: 'cbaz',
 			d: 'cqux',
 			e: 'cpoo',
 			f: 'czum'
-		});
+		};
 
-		mk.initRouter('/a/b/c/');
-		mk.initRouter('/d/e/f/', 'history');
+		initRouter(obj, '/a/b/c/');
+		initRouter(obj, '/d/e/f/', 'history');
 
-		expect(MK.Router.hash.path).toEqual('/cfoo/cbar/cbaz/');
-		expect(MK.Router.history.path).toEqual('/cqux/cpoo/czum/');
+		expect(Router.hash.path).toEqual('/cfoo/cbar/cbaz/');
+		expect(Router.history.path).toEqual('/cqux/cpoo/czum/');
 
 		setTimeout(() => {
 			expect(document.location.hash).toEqual('#!/cfoo/cbar/cbaz/');
@@ -73,29 +58,27 @@ describe('Summary', () => {
 	});
 
 	it('allows to walk thru the history via hash router', done => {
-		var mk = new MK();
-
-		mk.set({
+		var obj = {
 			a: 'wfoo',
 			b: 'wbar',
 			c: 'wbaz'
-		});
+		};
 
-		mk.initRouter('/a/b/c/');
+		initRouter(obj, '/a/b/c/');
 
 		setTimeout(() => {
 			expect(document.location.hash).toEqual('#!/wfoo/wbar/wbaz/');
-			mk.a = 'wzoo';
+			obj.a = 'wzoo';
 
 			setTimeout(() => {
 				expect(document.location.hash).toEqual('#!/wzoo/wbar/wbaz/');
-				expect(mk.a).toEqual('wzoo');
+				expect(obj.a).toEqual('wzoo');
 				history.back();
 
 				setTimeout(() => {
 					expect(document.location.hash).toEqual('#!/wfoo/wbar/wbaz/');
 
-					expect(mk.a).toEqual('wfoo');
+					expect(obj.a).toEqual('wfoo');
 					done();
 				}, 50);
 			}, 50);
@@ -103,30 +86,28 @@ describe('Summary', () => {
 	});
 
 	it('allows to walk thru the history via history router', done => {
-		var mk = new MK();
-
-		mk.set({
+		var obj = {
 			a: 'wqux',
 			b: 'wpoo',
 			c: 'wzum'
-		});
+		};
 
-		mk.initRouter('/a/b/c/', 'history');
+		initRouter(obj, '/a/b/c/', 'history');
 
 		setTimeout(() => {
 			expect(document.location.pathname).toEqual('/wqux/wpoo/wzum/');
-			mk.a = 'wzoo';
+			obj.a = 'wzoo';
 
 			setTimeout(() => {
 				expect(document.location.pathname).toEqual('/wzoo/wpoo/wzum/');
-				expect(mk.a).toEqual('wzoo');
+				expect(obj.a).toEqual('wzoo');
 
 				history.back();
 
 				setTimeout(() => {
 					expect(document.location.pathname).toEqual('/wqux/wpoo/wzum/');
 
-					expect(mk.a).toEqual('wqux');
+					expect(obj.a).toEqual('wqux');
 
 					done();
 				}, 50);
@@ -140,33 +121,29 @@ describe('Summary', () => {
 
 		history.pushState({}, '', '/pfoo/pbar/pbaz/');
 
-		var mk = new MK();
-
-		mk.set({
+		var obj = {
 			a: null,
 			b: null,
 			c: 'quu',
 			d: null,
 			e: null,
 			f: 'boo'
-		});
+		};
 
-		mk.initRouter('/a/b/c/');
-		mk.initRouter('/d/e/f/', 'history');
-
-
+		initRouter(obj, '/a/b/c/');
+		initRouter(obj, '/d/e/f/', 'history');
 
 		setTimeout(() => {
 			expect(document.location.hash).toEqual('#!/hfoo/hbar/quu/');
 			expect(document.location.pathname).toEqual('/pfoo/pbar/boo/');
 
-			expect(mk.a).toEqual('hfoo');
-			expect(mk.b).toEqual('hbar');
-			expect(mk.c).toEqual('quu');
-			expect(mk.d).toEqual('pfoo');
-			expect(mk.e).toEqual('pbar');
-			expect(mk.f).toEqual('boo');
-			
+			expect(obj.a).toEqual('hfoo');
+			expect(obj.b).toEqual('hbar');
+			expect(obj.c).toEqual('quu');
+			expect(obj.d).toEqual('pfoo');
+			expect(obj.e).toEqual('pbar');
+			expect(obj.f).toEqual('boo');
+
 			done();
 		}, 50);
 	});

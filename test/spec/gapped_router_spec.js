@@ -1,10 +1,12 @@
+import Router from '../../src/router';
+
 describe('Gapped router (API test)', function() {
 	var obj = {
 		a: 'foo',
 		b: 'bar',
 		c: 'baz'
 	},
-	router = new MK.Router(null).subscribe(obj, 'a/*/c/*/e/f');
+	router = new Router(null).subscribe(obj, 'a/*/c/*/e/f');
 
 	it('initializes correctly', () => {
 		expect(obj.a).toEqual('foo');
