@@ -11,9 +11,9 @@
     "lint": "eslint ./test ./src",
     "compile-npm": "rimraf npm && babel src -d npm",
     "bundle": "webpack",
-    "release": "npm run compile-npm && npm publish",
+    "release-npm": "npm run compile-npm && npm publish",
     "release-bundle": "rimraf bundle && deploy-to-git",
-    "semantic-release": "semantic-release pre && npm run release-bundle && npm run release && semantic-release post",
+    "semantic-release": "semantic-release pre && npm run release-bundle && npm run release-npm && semantic-release post",
     "commit": "git-cz"
   },
   "config": {
