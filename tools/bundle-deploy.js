@@ -19,7 +19,7 @@ for(const field of fields) {
             throw Error(`Environment variable ${envVarName} presented at string "${configVar}" is missing`)
         }
 
-        return envVarName
+        return envVar;
     });
 }
 
