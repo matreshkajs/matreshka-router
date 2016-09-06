@@ -1,4 +1,5 @@
 const { execSync } = require('child_process');
+const path = require('path');
 
 execSync(`
     git config user.email "andrey.a.gubanov@gmail.com" &&
@@ -6,7 +7,9 @@ execSync(`
     git clone -b gh-pages https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git &&
     npm run bundle &&
     cd bundle &&
-    git add --all &&
+    git add . &&
     git commit --allow-empty -m $npm_package_version &&
     git push https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git gh-pages
-`);
+`, {
+    cwd: path.resolve(__dirname, '..')
+});
