@@ -4,7 +4,7 @@ const path = require('path');
 execSync(`
     git config user.email "andrey.a.gubanov@gmail.com" &&
     git config user.name "Andrey Gubanov (his digital copy)" &&
-    git clone -b gh-pages https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git &&
+    git clone -b gh-pages https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git bundle &&
     npm run bundle &&
     cd bundle &&
     git add . &&
