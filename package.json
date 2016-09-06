@@ -12,22 +12,21 @@
     "compile-npm": "rimraf npm && babel src -d npm",
     "bundle": "webpack",
     "release": "npm run compile-npm && npm publish",
-    "release-bundle": "rimraf bundle && node tools/bundle-deploy",
+    "release-bundle": "rimraf bundle && deploy-to-git",
     "semantic-release": "semantic-release pre && npm run release-bundle && npm run release && semantic-release post",
-    "commit": "git-cz",
-    "foobar": "node tools/bundle-deploy"
+    "commit": "git-cz"
   },
   "config": {
-    "deployOnGit": {
-        "repository": "https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git",
-        "branch": "gh-pages",
-        "folder": "bundle",
-        "script": "npm run bundle",
-        "commit": "$npm_package_version",
-        "user": {
-            "email": "andrey.a.gubanov@gmail.com",
-            "name": "Andrey Gubanov (his digital copy)"
-        }
+    "deployToGit": {
+      "repository": "https://$GH_TOKEN@github.com/matreshkajs/matreshka-router.git",
+      "branch": "gh-pages",
+      "folder": "bundle",
+      "script": "npm run bundle",
+      "commit": "$npm_package_version",
+      "user": {
+        "email": "andrey.a.gubanov@gmail.com",
+        "name": "Andrey Gubanov (his digital copy)"
+      }
     },
     "commitizen": {
       "path": "cz-simple-conventional-changelog"
@@ -78,6 +77,7 @@
     "commitizen": "^2.8.6",
     "coveralls": "^2.11.12",
     "cz-simple-conventional-changelog": "0.0.0",
+    "deploy-to-git": "0.0.1",
     "eslint": "^3.4.0",
     "eslint-config-airbnb": "^10.0.1",
     "eslint-plugin-import": "^1.14.0",
