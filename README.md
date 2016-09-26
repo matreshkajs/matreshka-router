@@ -65,7 +65,7 @@ object.x = 'foo';
 object.y = 'bar';
 ```
 
-...``location.hash`` is automatically replaced by ``#!/foo/bar/``
+...``location.hash`` is automatically changed to ``#!/foo/bar/``
 
 
 And vice versa. When the URL is changed manually or via back and forward buttons, the properties will be changed automatically.
@@ -86,7 +86,7 @@ Matreshka.on(object, 'change:x', handler);
 
 ## An asterisk syntax
 
-You can pass a string which contain asterisks to ``initRouter`` if you don't need to synchronize some part of the path.
+You can pass a string which contain asterisks to ``initRouter`` if you don't need to synchronize some part of the path with a property.
 
 ```js
 Matreshka.initRouter(object, '/x/*/y');
@@ -132,7 +132,7 @@ The idea is to get actual state of URL. It could be weird to get ``"z"`` with va
 
 ## HTML5 History API
 
-The plugin supports  HTML5 History as well. To initialize it you need to pass optional argument ``type`` with ``"history"`` value to the ``initRoute`` (by default ``type`` is ``"hash"``).
+The plugin supports  HTML5 History as well. To initialize it you need to pass optional argument ``type`` with ``"history"`` value to the ``initRoute`` function (by default ``type`` is ``"hash"``).
 
 ```js
 Matreshka.initRouter(object, 'x/y/z/', 'history');
@@ -144,13 +144,13 @@ Matreshka.initRouter(object, 'x/y/z/', 'history');
 
 **matreshka-router** is powered by  ``Matreshka.Router`` class. It accepts only one argument - router type (``"hash"``, ``"history"`` or a custom string).
 
-By default, the library creates two instances of ``Matreshka.Router`` with types ``hash`` and ``history``. They are live at ``Matreshka.Router.hash`` and ``Matreshka.Router.history``. **matreshka-router** uses lazy initialization so when you just attach the script onto webpage, the library does nothing.
+By default, the library creates two instances of ``Matreshka.Router`` with types ``hash`` and ``history``. They live at ``Matreshka.Router.hash`` and ``Matreshka.Router.history``. **matreshka-router** uses lazy initialization so when you just attach the script onto webpage, the library does nothing.
 
-For these two types of instances the singleton pattern is used. That means when you're trying to create another instance of ``hash`` routing via ``new Matreshka.Router('hash')``, the ``Matreshka.Router.hash`` will be returned instead of new instance creation. This logic centralizes URL handling, gives positive effect to the performance and doesn't allow to get collisions. Objects which are handled by ``initRouter`` just subscribe to the changes of needed type of router.
+For these two types of instances the singleton pattern is used. That means when you're trying to create another instance of ``hash`` routing via ``new Matreshka.Router('hash')``, the ``Matreshka.Router.hash`` will be returned instead of new instance creation. This logic centralizes URL handling, gives positive effect to the performance and doesn't make potential collisions. Objects which are handled by ``initRouter`` just subscribe to the changes of needed type of router.
 
 Custom instances (non-hash and non-history) of ``Matreshka.Router`` can be created manually in case if you generate URL for further usage. At this case changes of target properties don't affect on ``hash`` and don't call ``pushState``.
 
-### Properties
+#### Properties
 
 ``Matreshka.Router`` instances has 3 properties.
 
@@ -166,7 +166,7 @@ Matreshka.Router.hash.path = '/yo/man/';
 
 By changing these properties you can trigger needed procedures (update the path, change subscribed objects etc.)
 
-### Methods
+#### Methods
 
 - ``subscribe(object, route)`` - subscribes object for route changes.
 - ``init()`` - used for lazy initialization in  ``subscribe`` method (no need to call it manually).
