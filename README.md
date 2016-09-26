@@ -50,9 +50,7 @@ route("books/:id", id => {
 });
 ```
 
-The principle of matreshka-router is different. You define which part of an URL (both [hash](https://developer.mozilla.org/ru/docs/Web/API/Window/location), and [HTML5 History](https://developer.mozilla.org/ru/docs/Web/API/History_API) are supported) need to be synchronized with given property.
-
-**Disclamer:** this way of routing may not cover 100% needs. If you need full-featured router you can use another library.
+The principle of **matreshka-router** is different. You define which part of an URL (both [hash](https://developer.mozilla.org/ru/docs/Web/API/Window/location), and [HTML5 History](https://developer.mozilla.org/ru/docs/Web/API/History_API) are supported) need to be synchronized with given property.
 
 Let's say you need to synchronize ``"x"`` with the first part of ``location.hash`` and ``"y"`` with the second.
 
@@ -75,10 +73,9 @@ And vice versa. When the URL is changed manually or via back and forward buttons
 ```js
 location.hash = '#!/baz/qux/';
 
+// ... after a moment
 console.log(object.x, object.y); // ‘baz’, ‘qux’
 ```
-
-## Property change listening
 
 As usually you can listen property changes with [Matreshka#on](http://matreshka.io/#!Matreshka-on) method.
 
@@ -145,9 +142,9 @@ Matreshka.initRouter(object, 'x/y/z/', 'history');
 
 ### ``Matreshka.Router`` class
 
-The core of Matreshka Router is powered by  ``Matreshka.Router`` class. It accepts only one argument - router type (``"hash"``, ``"history"`` or a custom string).
+**matreshka-router** is powered by  ``Matreshka.Router`` class. It accepts only one argument - router type (``"hash"``, ``"history"`` or a custom string).
 
-By default, the library creates two instances of ``Matreshka.Router`` with types ``hash`` and ``history``. They are contained in ``Matreshka.Router.hash`` and ``Matreshka.Router.history``. matreshka-router uses lazy initialization so when you just attach the script onto webpage, the library does nothing.
+By default, the library creates two instances of ``Matreshka.Router`` with types ``hash`` and ``history``. They are live at ``Matreshka.Router.hash`` and ``Matreshka.Router.history``. **matreshka-router** uses lazy initialization so when you just attach the script onto webpage, the library does nothing.
 
 For these two types of instances the singleton pattern is used. That means when you're trying to create another instance of ``hash`` routing via ``new Matreshka.Router('hash')``, the ``Matreshka.Router.hash`` will be returned instead of new instance creation. This logic centralizes URL handling, gives positive effect to the performance and doesn't allow to get collisions. Objects which are handled by ``initRouter`` just subscribe to the changes of needed type of router.
 
@@ -175,7 +172,7 @@ By changing these properties you can trigger needed procedures (update the path,
 - ``init()`` - used for lazy initialization in  ``subscribe`` method (no need to call it manually).
 
 ```js
-const customRouter = new Matreshka.Router('foo');
+const customRouter = new Matreshka.Router('myType');
 const object = {
 	a: 'foo',
 	b: 'bar'
@@ -199,5 +196,5 @@ initRouter(object, '/x/y/');
 
 ```js
 const Router = require('matreshka-router/router');
-const customRouter = new Router('foo');
+const customRouter = new Router('myType');
 ```
