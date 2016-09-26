@@ -16,7 +16,7 @@ describe('Summary', () => {
         expect(Router.history.type).toBeTruthy('history');
     });
 
-    it('allows to subscribe via static method', done => {
+    it('allows to subscribe via static method', (done) => {
         const obj = {
             a: 'foo',
             b: 'bar',
@@ -34,7 +34,7 @@ describe('Summary', () => {
     });
 
     it('doesn\'t make collisions when an object'
-        + 'subscribes to both hash and history router', done => {
+        + 'subscribes to both hash and history router', (done) => {
         const obj = {
             a: 'cfoo',
             b: 'cbar',
@@ -57,7 +57,7 @@ describe('Summary', () => {
         }, 50);
     });
 
-    it('allows to walk thru the history via hash router', done => {
+    it('allows to walk thru the history via hash router', (done) => {
         const obj = {
             a: 'wfoo',
             b: 'wbar',
@@ -85,7 +85,7 @@ describe('Summary', () => {
         }, 50);
     });
 
-    it('allows to walk thru the history via history router', done => {
+    it('allows to walk thru the history via history router', (done) => {
         const obj = {
             a: 'wqux',
             b: 'wpoo',
@@ -115,7 +115,7 @@ describe('Summary', () => {
         }, 50);
     });
 
-    it('gets default value of hash on initialization', done => {
+    it('gets default value of hash on initialization', (done) => {
         history.pushState({}, '', '/pfoo/pbar/pbaz/');
         location.hash = '#!/hfoo/hbar/hbaz/';
 

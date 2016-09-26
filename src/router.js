@@ -84,7 +84,7 @@ class Router {
             }
         }, { debounceCalc: false });
 
-        on(this, 'change:parts', evt => {
+        on(this, 'change:parts', (evt) => {
             const { value, previousValue } = evt;
             let equals = value.length === previousValue.length;
 
@@ -110,7 +110,7 @@ class Router {
 
                 window.addEventListener('hashchange', () => handleHashChange(this));
 
-                onDebounce(this, 'change:hashPath', evt => {
+                onDebounce(this, 'change:hashPath', (evt) => {
                     if (!evt || !evt.hashEvent) {
                         location.hash = this.hashPath;
                     }
@@ -118,13 +118,13 @@ class Router {
             } else if (type === 'history') {
                 handlePopStateChange(this);
 
-                window.addEventListener('popstate', evt => {
+                window.addEventListener('popstate', (evt) => {
                     if (evt.state && evt.state.validPush) {
                         handlePopStateChange(this);
                     }
                 });
 
-                onDebounce(this, 'change:path', evt => {
+                onDebounce(this, 'change:path', (evt) => {
                     if (!evt || !evt.popEvent) {
                         history.pushState({
                             validPush: true
@@ -152,7 +152,7 @@ class Router {
             changeEvents.push(`change:${key}`);
         }
 
-        on(obj, changeEvents, evt => {
+        on(obj, changeEvents, (evt) => {
             if (evt && evt.routeSilent) {
                 return;
             }

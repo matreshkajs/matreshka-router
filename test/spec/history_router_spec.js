@@ -10,7 +10,7 @@ describe('HTML5 History routing', () => {
         router = new Router('history').subscribe(obj, 'a/b/c/d');
     });
 
-    it('initializes correctly', done => {
+    it('initializes correctly', (done) => {
         expect(obj.a).toEqual('foo');
         expect(obj.b).toEqual(null);
         expect(obj.c).toEqual(null);
@@ -22,7 +22,7 @@ describe('HTML5 History routing', () => {
         }, 50);
     });
 
-    it('changes properties when URL (pathname) is changed', done => {
+    it('changes properties when URL (pathname) is changed', (done) => {
         router.path = '/bar/baz/qux/';
 
         setTimeout(() => {
@@ -34,7 +34,7 @@ describe('HTML5 History routing', () => {
         }, 50);
     });
 
-    it('changes URL (pathname) when property is changed', done => {
+    it('changes URL (pathname) when property is changed', (done) => {
         obj.b = 'lol';
         setTimeout(() => {
             expect(document.location.pathname).toEqual('/bar/lol/qux/');
