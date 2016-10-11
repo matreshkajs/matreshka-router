@@ -3,6 +3,7 @@ A router for Matreshka.js
 
 [![Coverage Status](https://coveralls.io/repos/github/matreshkajs/matreshka-router/badge.svg?branch=master)](https://coveralls.io/github/matreshkajs/matreshka-router?branch=master) [![Build Status](https://travis-ci.org/matreshkajs/matreshka-router.svg?branch=master)](https://travis-ci.org/matreshkajs/matreshka-router) [![npm version](https://badge.fury.io/js/matreshka-router.svg)](https://badge.fury.io/js/matreshka-router)
 
+
 [Demo](https://matreshkajs.github.io/matreshka-router/demo.html#!/foo/bar/baz/)
 
 Installing:
@@ -11,6 +12,8 @@ npm install --save matreshka-router
 ```
 
 A bundle (downloadable version) lives at [gh-pages brahcn](https://github.com/matreshkajs/matreshka-router/tree/gh-pages)
+
+### [Demo](http://output.jsbin.com/pigihe/13/#!/foo/bar/baz/)
 
 # tl;dr
 
@@ -198,5 +201,3 @@ customRouter.subscribe(object, '/a/b/');
 
 console.log(customRouter.path); // /foo/bar/
 ```
-
-
