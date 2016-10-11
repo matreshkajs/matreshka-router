@@ -46,9 +46,6 @@
       "commit-msg": "validate-commit-msg"
     }
   },
-  "release": {
-    "branch": "next"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/matreshkajs/matreshka-router.git"
