@@ -5,8 +5,5 @@ coverage
 .coveralls.yml
 npm
 bundle
-index.js
-!src/index.js
-!test/index.js
-router.js
-!src/router.js
+/index.js
+/router.js
