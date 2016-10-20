@@ -11,7 +11,7 @@ Installing:
 npm install --save matreshka-router
 ```
 
-A bundle (downloadable version) lives at [gh-pages brahcn](https://github.com/matreshkajs/matreshka-router/tree/gh-pages)
+A bundle (downloadable version) lives at [gh-pages branch](https://github.com/matreshkajs/matreshka-router/tree/gh-pages)
 
 ### [Demo](http://output.jsbin.com/pigihe/13/#!/foo/bar/baz/)
 
