@@ -1,9 +1,6 @@
 {
-    "parser": "babel-eslint",
     "extends": [
-        "plugin:import/errors",
-        "plugin:import/warnings",
-        "airbnb"
+        "airbnb-base"
     ],
     "rules": {
         "indent": ["error", 4],
