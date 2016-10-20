@@ -11,7 +11,7 @@ global.window = jsdom('<!doctype html><html><body></body></html>', {
 jasmine.loadConfig({
     spec_dir: 'test/spec',
     spec_files: [
-        '**/summary_spec.js'
+        '**/*_spec.js'
     ]
 });
 
