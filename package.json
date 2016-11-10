@@ -1,7 +1,7 @@
 {
   "name": "matreshka-router",
   "version": "0.0.0-auto",
-  "description": "Router-like plugin for Matreshka.js",
+  "description": "A router for Matreshka.js",
   "main": "index",
   "scripts": {
     "test": "npm run unit && npm run lint",
