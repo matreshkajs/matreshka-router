@@ -13,8 +13,6 @@ npm install --save matreshka-router
 
 A bundle (downloadable version) lives at [gh-pages branch](https://github.com/matreshkajs/matreshka-router/tree/gh-pages)
 
-### [Demo](http://output.jsbin.com/pigihe/13/#!/foo/bar/baz/)
-
 # tl;dr
 
 The library turns on two-way data binding between properties and parts of URL.
