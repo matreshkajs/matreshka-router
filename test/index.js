@@ -1,6 +1,6 @@
 const Jasmine = require('jasmine');
 const { jsdom } = require('jsdom');
-const SpecReporter = require('jasmine-spec-reporter');
+const { SpecReporter } = require('jasmine-spec-reporter');
 
 const jasmine = new Jasmine();
 
