@@ -5,7 +5,8 @@ const { document, location, history, Event } = window;
 
 describe('Summary', () => {
     beforeEach(() => {
-        Router.hash.path = Router.history.path = '';
+        Router.history.path = '';
+        Router.hash.path = '';
     });
 
     it('has correct instances', () => {
