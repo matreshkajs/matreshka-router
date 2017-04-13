@@ -155,7 +155,7 @@ const Router = require('matreshka-router/router');
 const customRouter = new Router('myType');
 ```
 
-## An additional information
+## Additional information
 
 ### ``Matreshka.Router`` class
 
@@ -178,7 +178,7 @@ Custom instances (non-hash and non-history) of ``Matreshka.Router`` can be creat
 All these properties are created using [calc](https://matreshka.io/#!Matreshka-calc), which means when you change one property, the others are changed automatically.
 
 ```js
-Matreshka.Router.hash.path = '/yo/man/';
+Matreshka.Router.hash.path = '/foo/bar/baz/';
 ```
 
 By changing these properties you can trigger needed procedures (update the path, change subscribed objects etc.)
