@@ -31,7 +31,7 @@ describe('Summary', () => {
         setTimeout(() => {
             expect(document.location.hash).toEqual('#!/foo/bar/baz/');
             done();
-        }, 50);
+        }, 500);
     });
 
     it('doesn\'t make collisions when an object'
