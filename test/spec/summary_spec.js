@@ -1,7 +1,9 @@
 import Router from '../../src/router';
 import initRouter from '../../src/';
 
-const { document, location, history, Event } = window;
+const {
+    document, location, history, Event
+} = window;
 
 describe('Summary', () => {
     beforeEach(() => {
