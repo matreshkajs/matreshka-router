@@ -1,3 +1,5 @@
+The repository is no longer updated. The project is moved there: https://github.com/finom/seemple
+
 A router for Matreshka.js
 ============
 
