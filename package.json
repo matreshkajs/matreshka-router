@@ -84,7 +84,7 @@
     "matreshka": "^2.4.0",
     "npm-check-updates": "^2.12.1",
     "rimraf": "^2.6.2",
-    "semantic-release": "^8.0.3",
+    "semantic-release": "^17.2.3",
     "validate-commit-msg": "^2.14.0",
     "webpack": "^3.6.0",
     "webpack-generate-umd-externals": "0.0.4"
